@@ -1,0 +1,75 @@
+# In this file we will a reinforcement learning AI that plays tic-tac-toe.
+# The will take advantage of the isomorphism between the tic-tac-toe board-states
+# and the 3x3 magic square
+# | 2 | 7 | 6 |
+# | 9 | 5 | 1 |
+# | 4 | 3 | 8 |
+#
+# Chosing an square in tic-tac-toe is equivalent to chosing a number from 1 to 9.
+# A player win when they have chosen 3 numbers that add up to 15.
+
+from itertools import combinations
+import random
+
+def check_win(x: list) -> bool:
+    found = False
+    if len(x) < 3:
+        return found
+    else:
+        for triple in combinations(x, 3):
+            if sum(triple) == 15:
+                found = True
+    return found
+
+class TicTacToe:
+    def __init__(self):
+        self.player1 = []
+        self.player2 = []
+        self.board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        self.winner = None
+        self.draw = False
+
+    def turn(self):
+        random_square = random.choice(self.board)
+        self.board.remove(random_square)
+
+        if len(self.player1) == len(self.player2):
+            self.player1.append(random_square)
+            if check_win(self.player1):
+                self.winner = 1
+
+        else:
+            self.player2.append(random_square)
+            if check_win(self.player2):
+                self.winner = 2
+        
+        return None
+    
+    def play(self):
+        while self.winner == None:
+            if len(self.board) > 0:
+                self.turn()
+            else:
+                self.draw= True
+                break
+        return None
+    
+    def result(self):
+        if self.draw:
+            return 0, self.player1, self.player2
+        else:
+            return self.winner, self.player1, self.player2
+    
+
+if __name__ == "__main__":
+    TTT = TicTacToe()
+    TTT.play()
+    for x in TTT.result():
+        print(x)
+
+            
+
+
+
+
+
