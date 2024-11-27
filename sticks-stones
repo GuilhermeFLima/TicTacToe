@@ -132,9 +132,11 @@ class ManualTicTacToe:
 
 
 if __name__ == "__main__":
-    # TTT = RandomTicTacToe()
-    # TTT.play()
-    # for x in TTT.result():
+    # Quickly testing both classes:
+    #
+    # RTTT = RandomTicTacToe()
+    # RTTT.play()
+    # for x in RTTT.result():
     #     print(x)
 
     # MTTT = ManualTicTacToe()
