@@ -21,11 +21,12 @@ def check_win(x: list) -> bool:
                 found = True
     return found
 
-class TicTacToe:
+class RandomTicTacToe:
     def __init__(self):
+        self.board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        # the following two lists record each players move: 
         self.player1 = []
         self.player2 = []
-        self.board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         self.winner = None
         self.draw = False
 
@@ -59,13 +60,77 @@ class TicTacToe:
             return 0, self.player1, self.player2
         else:
             return self.winner, self.player1, self.player2
+
+
+class ManualTicTacToe:
+    def __init__(self):
+        self.board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        
+        # the following two lists record each players move: 
+        self.player1 = []
+        self.player2 = []
+        
+        self.winner = None
+        self.draw = False
+
+        # if currentplayer = 0 then the game is over.
+        self.currentplayer = 1
     
+    def turn(self, square:int):
+        if square in self.board:
+            self.board.remove(square)
+            if self.currentplayer == 1:
+                self.player1.append(square)
+                if check_win(self.player1):
+                    self.winner = 1
+                    self.currentplayer = False
+                else:
+                    self.currentplayer = 2
+            else:
+                self.player2.append(square)
+                if check_win(self.player2):
+                    self.winner = 2
+                    self.currentplayer = False
+                else:
+                    self.currentplayer = 1
+        
+        # this line checks if the game ended in a draw by seeing if the 
+        # board is empty.
+        self.draw = not self.board
+        if self.draw:
+            self.currentplayer = False
+        return None
+    
+    def gamestate(self):
+        if self.currentplayer:
+            return 'in progress'
+        elif self.draw:
+            return 'draw'
+        else:
+            result = 'player {} wins'.format(self.winner)
+            return result
+            
+
+
 
 if __name__ == "__main__":
-    TTT = TicTacToe()
-    TTT.play()
-    for x in TTT.result():
-        print(x)
+    # TTT = RandomTicTacToe()
+    # TTT.play()
+    # for x in TTT.result():
+    #     print(x)
+
+    MTTT = ManualTicTacToe()
+    moves = [5, 2, 6, 4, 9, 1, 7, 3, 8]
+    for x in moves:
+        MTTT.turn(x)
+        print(MTTT.gamestate())
+        print(MTTT.board)
+        print('moves by player 1', MTTT.player1)
+        print('moves by player 2', MTTT.player2)
+        print('-----')
+    
+        
+
 
             
 
