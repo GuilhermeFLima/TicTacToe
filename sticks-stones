@@ -86,10 +86,14 @@ class RandomTicTacToe:
             return self.winner, self.player1, self.player2
         
     def linearboardstate(self):
+        # If there was an equal number of turns, then linearize works directly.
+        boardstate_even = linearize(l1=self.player1, l2=self.player2)
         if len(self.player1) == len(self.player2):
-            return linearize(l1=self.player1, l2=self.player2)
+            return boardstate_even
         else:
-            return linearize(l1=self.player1, l2=self.player2).append(self.player1[-1])
+            # If player 1 had one more turn, we must add it to the end.
+            boardstate_odd = boardstate_even + [self.player1[-1]]
+            return boardstate_odd
 
 
 
@@ -151,7 +155,7 @@ class ManualTicTacToe:
             return result
         
     def linearboardstate(self):
-        # If there was an equal number of turns, linearize works.
+        # If there was an equal number of turns, then linearize works directly.
         boardstate_even = linearize(l1=self.player1, l2=self.player2)
         if len(self.player1) == len(self.player2):
             return boardstate_even
@@ -171,7 +175,7 @@ if __name__ == "__main__":
     #     print(x)
 
     MTTT = ManualTicTacToe()
-    moves = [5, 2, 6, 4, 9, 1, 7, 3]
+    moves = [5, 2, 6, 4, 9, 1, 7, 3, 8]
     for x in moves:
         MTTT.turn(x)
         print(MTTT.gamestate())
