@@ -11,13 +11,28 @@
 from itertools import combinations
 import random
 
-def check_win(x: list) -> bool:
-    """Checks if a list contains 3 numbers that add uo to 15."""
+def linearize(l1: list, l2:list) -> list:
+    """
+    Takes two lists and creates a single list alternating 
+    the entries between each one. Note that for zip() to work
+    both lists must have the same size.
+    """
+
+    tuple_list = zip(l1, l2)
+    linear_list = []
+    for (a, b) in tuple_list:
+        linear_list.append(a)
+        linear_list.append(b)
+    return linear_list
+
+
+def check_win(movelist: list) -> bool:
+    """Checks if a list contains 3 numbers that add up to 15."""
     found = False
-    if len(x) < 3:
+    if len(movelist) < 3:
         return found
     else:
-        for triple in combinations(x, 3):
+        for triple in combinations(movelist, 3):                        
             if sum(triple) == 15:
                 found = True
     return found
@@ -69,6 +84,13 @@ class RandomTicTacToe:
             return 0, self.player1, self.player2
         else:
             return self.winner, self.player1, self.player2
+        
+    def linearboardstate(self):
+        if len(self.player1) == len(self.player2):
+            return linearize(l1=self.player1, l2=self.player2)
+        else:
+            return linearize(l1=self.player1, l2=self.player2).append(self.player1[-1])
+
 
 
 class ManualTicTacToe:
@@ -127,7 +149,16 @@ class ManualTicTacToe:
         else:
             result = 'player {} wins'.format(self.winner)
             return result
-            
+        
+    def linearboardstate(self):
+        # If there was an equal number of turns, linearize works.
+        boardstate_even = linearize(l1=self.player1, l2=self.player2)
+        if len(self.player1) == len(self.player2):
+            return boardstate_even
+        else:
+            # If player 1 had one more turn, we must add it to the end.
+            boardstate_odd = boardstate_even + [self.player1[-1]]
+            return boardstate_odd 
 
 
 
@@ -139,15 +170,17 @@ if __name__ == "__main__":
     # for x in RTTT.result():
     #     print(x)
 
-    # MTTT = ManualTicTacToe()
-    # moves = [5, 2, 6, 4, 9, 1, 7, 3, 8]
-    # for x in moves:
-    #     MTTT.turn(x)
-    #     print(MTTT.gamestate())
-    #     print(MTTT.board)
-    #     print('moves by player 1', MTTT.player1)
-    #     print('moves by player 2', MTTT.player2)
-    #     print('-----')
+    MTTT = ManualTicTacToe()
+    moves = [5, 2, 6, 4, 9, 1, 7, 3]
+    for x in moves:
+        MTTT.turn(x)
+        print(MTTT.gamestate())
+        print(MTTT.board)
+        print('moves by player 1', MTTT.player1)
+        print('moves by player 2', MTTT.player2)
+        print('-----')
+    
+    print(MTTT.linearboardstate())
     pass
     
         
