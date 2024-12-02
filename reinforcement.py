@@ -153,6 +153,12 @@ if __name__ == '__main__':
     #     for (key, value) in MB.gamestates[i].items():
     #         if value:
     #             print(key, value)
+
+    MB = Matchboxes()
+
+    for i in range(5):
+        print(i, len(MB.gamestateboxes[i]))
+
     pass
     
 
